@@ -39,7 +39,7 @@
     mode: '0755'
 
 - name: Create systemd service for monitoring
-  ansible.built.copy:
+  ansible.builtin.copy:
     src: monitoring.service
     dest: /etc/systemd/system/monitoring.service
     mode: '0644'
