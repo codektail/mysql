@@ -1,0 +1,15 @@
+---
+all:
+  hosts:
+    master:
+      ansible_host: 67.205.176.104
+      ansible_user: root
+    slave:
+      ansible_host: 157.245.253.5
+      ansible_user: root
+    lamb-impulsos:
+      ansible_host: 68.183.100.232
+      ansible_user: root
+    db-replica-impulsos:
+      ansible_host: 165.227.199.151
+      ansible_user: root

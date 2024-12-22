@@ -1,0 +1,8 @@
+---
+- name: Send a message
+  hosts: "{{ target }}"
+  become: true
+  tasks:
+    - name: Execute echo role
+      include_role:
+        name: echo

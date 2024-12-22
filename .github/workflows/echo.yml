@@ -1,0 +1,50 @@
+name: Run Ansible Playbook
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Target host(s) (e.g., master, slave, or all)'
+        required: true
+        default: 'all'
+      message:
+        description: 'Message to write'
+        required: true
+        default: 'Mi primer workflow'
+
+jobs:
+  ansible:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Ansible
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
+
+      - name: Generate dynamic inventory
+        run: |
+          cat <<EOF > ansible-echo/inventory.yml
+          all:
+            hosts:
+              master:
+                ansible_host: 67.205.176.104
+                ansible_user: root
+                ansible_ssh_pass: "${{ secrets.HOST_PASS_SSH }}"
+              slave:
+                ansible_host: 157.245.253.5
+                ansible_user: root
+                ansible_ssh_pass: "${{ secrets.HOST_PASS_SSH }}"
+          EOF
+
+      - name: Run Ansible Playbook
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: 'False'
+          ANSIBLE_INVENTORY: './ansible-echo/inventory.yml'
+        run: |
+          ansible-playbook -i $ANSIBLE_INVENTORY ansible-echo/playbook.yml \
+            --extra-vars "target=${{ github.event.inputs.target }} message='${{ github.event.inputs.message }}'" \
+            --ask-pass

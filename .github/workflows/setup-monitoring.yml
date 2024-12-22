@@ -1,0 +1,27 @@
+---
+name: SETUP MONITORING
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Target host(s) (e.g., machine1, machine2, machine3, or all)'
+        required: true
+        default: 'all'
+      message:
+        description: 'Message to write'
+        required: true
+        default: 'Mi primer workflow'
+
+jobs:
+  ansible-echo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Ansible
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
