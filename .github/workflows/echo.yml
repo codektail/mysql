@@ -1,4 +1,4 @@
-name: Run Ansible Playbook
+name: ECHO
 
 on:
   workflow_dispatch:
@@ -31,13 +31,13 @@ jobs:
           all:
             hosts:
               master:
-                ansible_host: 67.205.176.104
+                ansible_host: 68.183.100.232
                 ansible_user: root
-                ansible_ssh_pass: "${{ secrets.HOST_PASS_SSH }}"
+                ansible_ssh_pass: "${{ secrets.MASTER_IMPULSOS_SSHPASS }}"
               slave:
-                ansible_host: 157.245.253.5
+                ansible_host: 165.227.199.151
                 ansible_user: root
-                ansible_ssh_pass: "${{ secrets.HOST_PASS_SSH }}"
+                ansible_ssh_pass: "${{ secrets.SLAVE_IMPULSOS_SSHPASS }}"
           EOF
 
       - name: Run Ansible Playbook
