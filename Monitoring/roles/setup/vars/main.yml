@@ -1,0 +1,9 @@
+#SPDX-License-Identifier: MIT-0
+---
+# vars file for setup
+
+telegram_bot_token: '' # "7553348867:AAGpcoUQvNs0Fh1B0nODUW-3pH3ZhSK4CrU"
+telegram_channel_id: '' # "-1002355753280"
+cpu_threshold: 70
+memory_threshold: 70
+

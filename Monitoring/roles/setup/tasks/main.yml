@@ -1,0 +1,58 @@
+---
+# tasks file for setup    
+- name: Update APT repositories
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Install eBPF tools
+  ansible.builtin.apt:
+    name:
+      - bpfcc-tools
+      - "linux-headers-{{ ansible_kernel }}"
+    state: present
+
+- name: Install Python tools
+  ansible.builtin.apt:
+    name:
+      - python3-bpfcc
+      - python3-pip
+    state: present
+
+- name: Install Python libraries using pip
+  ansible.builtin.pip:
+    name:
+      - bcc
+      - psutil
+      - requests
+    executable: pip3
+
+- name: Create monitoring directory
+  ansible.builtin.file:
+    path: /root/monitoring
+    state: directory
+    mode: '0755'
+
+- name: Deploy monitoring.py template
+  ansible.builtin.template:
+    src: monitoring.py
+    dest: /root/monitoring/monitoring.py
+    mode: '0755'
+
+- name: Create systemd service for monitoring
+  ansible.built.copy:
+    src: monitoring.service
+    dest: /etc/systemd/system/monitoring.service
+    mode: '0644'
+
+- name: Reload systemd to recognize new service
+  command: systemctl daemon-reload
+
+- name: Enable monitoring service
+  systemd:
+    name: monitoring
+    enabled: yes
+
+- name: Start monitoring service
+  systemd:
+    name: monitoring
+    state: started

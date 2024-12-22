@@ -8,10 +8,14 @@ on:
         description: 'Target host(s) (e.g., machine1, machine2, machine3, or all)'
         required: true
         default: 'all'
-      message:
-        description: 'Message to write'
+      cpu_threshold:
+        description: 'CPU threshold to activate alert'
         required: true
-        default: 'Mi primer workflow'
+        default: 70
+      memory_threshold:
+        description: 'Memory threshold to activate alert'
+        required: true
+        default: 70
 
 jobs:
   ansible-echo:
@@ -25,3 +29,46 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y ansible
+      
+      - name: Ssh key file
+        run: |
+          pwd
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/generic
+          chmod 600 ~/.ssh/generic
+
+      - name: Generate dynamic inventory
+        run: |
+          cat <<EOF > ansible-echo/inventory.yml
+          all:
+            hosts:
+              master:
+                ansible_host: 67.205.176.104
+                ansible_user: root
+                ansible_ssh_private_key_file: ~/.ssh/generic
+              slave:
+                ansible_host: 157.245.253.5
+                ansible_user: root
+                ansible_ssh_private_key_file: ~/.ssh/generic
+              lamp-impulsos:
+                ansible_host: 68.183.100.232
+                ansible_user: root
+                ansible_ssh_pass: "${{ secrets.MASTER_IMPULSOS_SSHPASS }}"
+              db-replica-slave-impulsos:
+                ansible_host: 165.227.199.151
+                ansible_user: root
+                ansible_ssh_pass: "${{ secrets.SLAVE_IMPULSOS_SSHPASS }}"
+          EOF
+
+      - name: Run Ansible Playbook
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: 'False'
+          ANSIBLE_INVENTORY: './Monitoring/inventory.yml'
+        run: |
+          ansible-playbook -i $ANSIBLE_INVENTORY Monitoring/playbook.yml \
+            -e "target=${{ github.event.inputs.target }} '" \
+            -e "telegram_bot_token=${{ secrets.IMPULSOS_TELEGRAM_BOT_TOKEN }} '" \
+            -e "telegram_channel_id=${{ secrets.IMPULSOS_TELEGRAM_CHANNEL_ID }} '" \
+            -e "cpu_threshold=${{ github.event.inputs.cpu_threshold }} '" \
+            -e "memory_threshold=${{ github.event.inputs.memory_threshold }} '" \
+            --ask-pass

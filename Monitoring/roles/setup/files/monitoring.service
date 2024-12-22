@@ -1,0 +1,10 @@
+[Unit]
+Description=MySQL Monitor
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /root/monitoring/monitoring.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
