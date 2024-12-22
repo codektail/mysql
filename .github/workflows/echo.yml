@@ -24,6 +24,14 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y ansible
+      
+      - name: Ssh key file
+        run: |
+          mkdir .ssh/
+          touch .ssh/generic
+          cat <<EOF > .ssh/generic
+          {{ secrets.SSH_PRIVATE_KEY }}
+          EOF
 
       - name: Generate dynamic inventory
         run: |
@@ -31,10 +39,18 @@ jobs:
           all:
             hosts:
               master:
+                ansible_host: 67.205.176.104
+                ansible_user: root
+                ansible_ssh_private_key_file=~/.ssh/generic
+              slave:
+                ansible_host: 157.245.253.5
+                ansible_user: root
+                ansible_ssh_private_key_file=~/.ssh/generic
+              lamp-impulsos:
                 ansible_host: 68.183.100.232
                 ansible_user: root
                 ansible_ssh_pass: "${{ secrets.MASTER_IMPULSOS_SSHPASS }}"
-              slave:
+              db-replica-slave-impulsos:
                 ansible_host: 165.227.199.151
                 ansible_user: root
                 ansible_ssh_pass: "${{ secrets.SLAVE_IMPULSOS_SSHPASS }}"
