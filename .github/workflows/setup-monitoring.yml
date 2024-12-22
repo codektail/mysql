@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       target:
-        description: 'Target host(s) (e.g., machine1, machine2, machine3, or all)'
+        description: 'Target host(s) (e.g., lamp-impulsos, db-replica-slave-impulsos, master, slave,  or all)'
         required: true
         default: 'all'
       cpu_threshold:
@@ -39,7 +39,7 @@ jobs:
 
       - name: Generate dynamic inventory
         run: |
-          cat <<EOF > ansible-echo/inventory.yml
+          cat <<EOF > Monitoring/inventory.yml
           all:
             hosts:
               master:
