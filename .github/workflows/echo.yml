@@ -27,10 +27,11 @@ jobs:
       
       - name: Ssh key file
         run: |
+          ls -la
           mkdir .ssh/
           touch .ssh/generic
           cat <<EOF > .ssh/generic
-          {{ secrets.SSH_PRIVATE_KEY }}
+          ${{ secrets.SSH_PRIVATE_KEY }}
           EOF
 
       - name: Generate dynamic inventory
