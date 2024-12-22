@@ -41,11 +41,11 @@ jobs:
               master:
                 ansible_host: 67.205.176.104
                 ansible_user: root
-                ansible_ssh_private_key_file=~/.ssh/generic
+                ansible_ssh_private_key_file: ~/.ssh/generic
               slave:
                 ansible_host: 157.245.253.5
                 ansible_user: root
-                ansible_ssh_private_key_file=~/.ssh/generic
+                ansible_ssh_private_key_file: ~/.ssh/generic
               lamp-impulsos:
                 ansible_host: 68.183.100.232
                 ansible_user: root
