@@ -29,7 +29,7 @@ jobs:
         run: |
           pwd
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY_GENERIC }}" > ~/.ssh/generic
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/generic
           chmod 600 ~/.ssh/generic
 
       - name: Generate dynamic inventory
