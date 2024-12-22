@@ -63,5 +63,4 @@ jobs:
           ANSIBLE_INVENTORY: './ansible-echo/inventory.yml'
         run: |
           ansible-playbook -i $ANSIBLE_INVENTORY ansible-echo/playbook.yml \
-            --extra-vars "target=${{ github.event.inputs.target }} message='${{ github.event.inputs.message }}'" \
-            --ask-pass
+            --extra-vars "target=${{ github.event.inputs.target }} message='${{ github.event.inputs.message }}'" 
