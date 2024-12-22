@@ -27,6 +27,7 @@ jobs:
       
       - name: Ssh key file
         run: |
+          pwd
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_KEY_GENERIC }}" > ~/.ssh/generic
           chmod 600 ~/.ssh/generic
