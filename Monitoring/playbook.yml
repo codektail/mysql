@@ -1,0 +1,8 @@
+---
+- name: Send a message
+  hosts: "{{ target }}"
+  become: true
+  tasks:
+    - name: Execute Setup role
+      include_role:
+        name: setup
