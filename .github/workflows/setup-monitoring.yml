@@ -66,9 +66,9 @@ jobs:
           ANSIBLE_INVENTORY: './Monitoring/inventory.yml'
         run: |
           ansible-playbook -i $ANSIBLE_INVENTORY Monitoring/playbook.yml \
-            -e "target=${{ github.event.inputs.target }} '" \
-            -e "telegram_bot_token=${{ secrets.IMPULSOS_TELEGRAM_BOT_TOKEN }} '" \
-            -e "telegram_channel_id=${{ secrets.IMPULSOS_TELEGRAM_CHANNEL_ID }} '" \
-            -e "cpu_threshold=${{ github.event.inputs.cpu_threshold }} '" \
-            -e "memory_threshold=${{ github.event.inputs.memory_threshold }} '" \
+            -e "target=${{ github.event.inputs.target }} " \
+            -e "telegram_bot_token=${{ secrets.IMPULSOS_TELEGRAM_BOT_TOKEN }} " \
+            -e "telegram_channel_id=${{ secrets.IMPULSOS_TELEGRAM_CHANNEL_ID }} " \
+            -e "cpu_threshold=${{ github.event.inputs.cpu_threshold }} " \
+            -e "memory_threshold=${{ github.event.inputs.memory_threshold }} " \
             --ask-pass
