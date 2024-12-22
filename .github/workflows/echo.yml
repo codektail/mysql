@@ -27,12 +27,9 @@ jobs:
       
       - name: Ssh key file
         run: |
-          ls -la
-          mkdir .ssh/
-          touch .ssh/generic
-          cat <<EOF > .ssh/generic
-          ${{ secrets.SSH_PRIVATE_KEY }}
-          EOF
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY_GENERIC }}" > ~/.ssh/generic
+          chmod 600 ~/.ssh/generic
 
       - name: Generate dynamic inventory
         run: |
@@ -63,4 +60,5 @@ jobs:
           ANSIBLE_INVENTORY: './ansible-echo/inventory.yml'
         run: |
           ansible-playbook -i $ANSIBLE_INVENTORY ansible-echo/playbook.yml \
-            --extra-vars "target=${{ github.event.inputs.target }} message='${{ github.event.inputs.message }}'" 
+            --extra-vars "target=${{ github.event.inputs.target }} message='${{ github.event.inputs.message }}'" \
+            --ask-pass
