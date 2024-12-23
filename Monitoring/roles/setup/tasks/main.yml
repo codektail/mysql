@@ -60,4 +60,4 @@
 - name: Start monitoring service
   systemd:
     name: monitoring
-    state: reloaded
+    state: restarted
