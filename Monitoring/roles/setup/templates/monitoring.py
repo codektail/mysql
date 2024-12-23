@@ -102,8 +102,11 @@ def monitor_mysql_exit():
             line = b.trace_readline().decode()
             print(f"Debug: {line}")
             if "MySQL process exited" in line:
-                send_telegram_alert(f"💔 ALERT: MySQL state change\nHostname: {HOSTNAME}\nMySQL has changed its state.")
-                restart_mysql_service()  # Restart MySQL service if inactive
+                if not is_mysql_service_active():
+                   send_telegram_alert(f"💔 ALERT: MySQL state change to down\nHostname: {HOSTNAME}\nMySQL has changed its state.")
+                   restart_mysql_service()  # Restart MySQL service if inactive
+                else:
+                   send_telegram_alert(f"⚠️ ALERT: MySQL state change to active\nHostname: {HOSTNAME}\nMySQL has changed its state.")
         except KeyboardInterrupt:
             print("Monitoring stopped.")
             exit()
