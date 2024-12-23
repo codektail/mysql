@@ -56,3 +56,8 @@
   systemd:
     name: monitoring
     state: started
+
+- name: Start monitoring service
+  systemd:
+    name: monitoring
+    state: reloaded
